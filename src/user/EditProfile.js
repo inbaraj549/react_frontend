@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {isAuthenticated} from "../auth";
+import {authenticate, isAuthenticated} from "../auth";
 import { Route,Routes,Navigate} from 'react-router-dom';
 import {read,update} from "./apiUser";
 
@@ -41,6 +41,10 @@ class EditProfile extends Component {
        // console.log(user);
        const userId = this.props.params.userId;
        const token = isAuthenticated().token;
+       const jwt = isAuthenticated();
+       jwt.user.name = user.name;
+       authenticate(jwt,()=>{});
+
          update(userId,token,user)
           .then(data=>{
           if(data.error) {
